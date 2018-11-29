@@ -1,8 +1,9 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
+
+Properties apiProperties = new Properties()
+apiProperties.load(file("../api.properties").newReader())
 
 android {
     compileSdkVersion 28
@@ -12,6 +13,10 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
+
+        buildConfigField "String", "API_ENDPOINT", apiProperties['api_endpoint']
+        buildConfigField "String", "API_KEY", apiProperties['api_key']
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -22,13 +27,23 @@ android {
     }
 }
 
+apply from: '../versions.gradle'
+
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.android.support:appcompat-v7:$appcompat_version"
     implementation "com.android.support.constraint:constraint-layout:$constraintlayout_version"
+
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava:$retrofit_version"
+
+    implementation "io.reactivex.rxjava2:rxjava:$rx_version"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
 
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "com.android.support.test:runner:$testrunner_version"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso_version"
+
 }
