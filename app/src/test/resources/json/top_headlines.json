@@ -1,0 +1,32 @@
+{
+  "status": "ok",
+  "totalResults": 2,
+  "articles": [
+    {
+      "source": {
+        "id": null,
+        "name": "Seekingalpha.com"
+      },
+      "author": null,
+      "title": "Apple says XR is \"best-selling iPhone\" - Seeking Alpha",
+      "description": null,
+      "url": "https://seekingalpha.com/news/3413123-apple-says-xr-best-selling-iphone",
+      "urlToImage": null,
+      "publishedAt": "2018-11-29T13:12:00Z",
+      "content": null
+    },
+    {
+      "source": {
+        "id": "nbc-news",
+        "name": "NBC News"
+      },
+      "author": null,
+      "title": "China orders halt to gene-editing after scientist's claims - NBCNews.com",
+      "description": null,
+      "url": "https://www.nbcnews.com/health/health-news/china-orders-halt-gene-editing-after-scientist-s-claims-n941556",
+      "urlToImage": null,
+      "publishedAt": "2018-11-29T12:50:00Z",
+      "content": null
+    }
+  ]
+}
