@@ -2,8 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
-Properties apiProperties = new Properties()
-apiProperties.load(file("../api.properties").newReader())
+def apiProperties = new Properties()
+def propFile = file("../api.properties")
+if (propFile.exists()) {
+    apiProperties.load(file("../api.properties").newReader())
+} else {
+    apiProperties.put("api_key", "$System.env.API_KEY")
+}
+
 
 android {
     compileSdkVersion 28
@@ -14,7 +20,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        buildConfigField "String", "API_ENDPOINT", apiProperties['api_endpoint']
+        buildConfigField "String", "API_ENDPOINT", '"https://newsapi.org/v2/"'
         buildConfigField "String", "API_KEY", apiProperties['api_key']
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
