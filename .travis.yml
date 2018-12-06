@@ -28,9 +28,10 @@ jobs:
   include:
     - stage: "build"
       script: ./gradlew clean build
-    - stage: "unit test"
+    - stage: "test"
+      name: "Unit Tests"
       script: ./gradlew clean testDebugUnitTest --stacktrace
-    - stage: "android test"
+    - name: "Android Tests"
       # Emulator Management: Create, Start and Wait
       before_script:
         - echo no | android create avd --force -n test -t "android-"$ANDROID_EMULATOR_LEVEL --abi $ANDROID_ABI
