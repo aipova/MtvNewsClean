@@ -24,27 +24,32 @@ android:
 
     - sys-img-$ANDROID_ABI-android-$ANDROID_EMULATOR_LEVEL
 
+jobs:
+  include:
+    - stage: "build"
+      script: ./gradlew clean build
+    - stage: "unit test"
+      script: ./gradlew clean testDebugUnitTest --stacktrace
+    - stage: "android test"
+      # Emulator Management: Create, Start and Wait
+      before_script:
+        - echo no | android create avd --force -n test -t "android-"$ANDROID_EMULATOR_LEVEL --abi $ANDROID_ABI
+        - emulator -avd test -no-skin -no-window &
+        - travis_wait android-wait-for-emulator
+        - adb shell input keyevent 82 &
+      script: ./gradlew clean connectedDebugAndroidTest --stacktrace
+
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 
 cache:
   directories:
-  - "$HOME/.gradle/caches/"
-  - "$HOME/.gradle/wrapper/"
-  - "$HOME/.android/build-cache"
+    - "$HOME/.gradle/caches/"
+    - "$HOME/.gradle/wrapper/"
+    - "$HOME/.android/build-cache"
 
 licenses:
     - 'android-sdk-license-.+'
     - 'google-gdk-license-.+'
     - 'android-sdk-preview-license-.+'
-
-# Emulator Management: Create, Start and Wait
-before_script:
-  - echo no | android create avd --force -n test -t "android-"$ANDROID_EMULATOR_LEVEL --abi $ANDROID_ABI
-  - emulator -avd test -no-skin -no-window &
-  - travis_wait android-wait-for-emulator
-  - adb shell input keyevent 82 &
-
-script:
-  ./gradlew clean build connectedCheck --stacktrace
