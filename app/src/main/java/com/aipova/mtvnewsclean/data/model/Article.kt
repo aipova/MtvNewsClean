@@ -1,22 +1,39 @@
 package com.aipova.mtvnewsclean.data.model
 
-import com.google.gson.annotations.SerializedName
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
+import com.aipova.mtvnewsclean.data.local.ArticleTable
+import java.util.*
 
+@Entity(tableName = ArticleTable.NAME)
 data class Article(
-    @SerializedName("author")
+    @ColumnInfo(name = ArticleTable.COLUMN_AUTHOR)
     val author: String?,
-    @SerializedName("content")
+
+    @ColumnInfo(name = ArticleTable.COLUMN_CONTENT)
     val content: String,
-    @SerializedName("description")
+
+    @ColumnInfo(name = ArticleTable.COLUMN_DESCRIPTION)
     val description: String?,
-    @SerializedName("publishedAt")
-    val publishedAt: String,
-    @SerializedName("source")
+
+    @ColumnInfo(name = ArticleTable.COLUMN_PUBLISHED_AT)
+    val publishedAt: Date,
+
+    @Ignore
     val source: Source,
-    @SerializedName("title")
+
+    @ColumnInfo(name = ArticleTable.COLUMN_TITLE)
     val title: String,
-    @SerializedName("url")
+
+    @ColumnInfo(name = ArticleTable.COLUMN_URL)
     val url: String,
-    @SerializedName("urlToImage")
-    val urlToImage: Any?
-)
+
+    @ColumnInfo(name = ArticleTable.COLUMN_URL_TO_IMAGE)
+    val urlToImage: String?
+) {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = ArticleTable.COLUMN_ID)
+    var id: Int = 0
+}

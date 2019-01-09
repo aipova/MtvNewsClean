@@ -1,7 +1,7 @@
 package com.aipova.mtvnewsclean.data.remote
 
 import com.aipova.mtvnewsclean.data.model.NewsResponse
-import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -45,7 +45,7 @@ class NewsApiTest {
         mockServer.enqueue(mockHeadlinesResponse)
 
         val response = newsApi.getTopHeadlines().toBlocking().single()
-        val expectedResponse = Gson().fromJson(jsonResponse, NewsResponse::class.java)
+        val expectedResponse = GsonBuilder().setDateFormat(API_DATE_FORMAT).create().fromJson(jsonResponse, NewsResponse::class.java)
 
         assertEquals(expectedResponse, response)
     }
