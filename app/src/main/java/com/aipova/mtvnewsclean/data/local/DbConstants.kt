@@ -1,5 +1,7 @@
 package com.aipova.mtvnewsclean.data.local
 
+const val DATABASE_NAME = "news-db"
+
 object ArticleTable {
     const val NAME = "articles"
     const val COLUMN_AUTHOR = "author"

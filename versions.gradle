@@ -8,6 +8,6 @@ ext {
   room_version = '2.1.0-alpha03'
 
   junit_version = '4.12'
-  testrunner_version = '1.1.1'
+  testrunner_version = '1.1.0'
   espresso_version = '3.1.1'
 }
