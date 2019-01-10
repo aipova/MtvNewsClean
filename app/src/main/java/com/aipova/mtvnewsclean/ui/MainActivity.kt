@@ -1,7 +1,8 @@
-package com.aipova.mtvnewsclean
+package com.aipova.mtvnewsclean.ui
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.aipova.mtvnewsclean.R
 
 class MainActivity : AppCompatActivity() {
 

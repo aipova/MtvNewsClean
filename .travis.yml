@@ -1,0 +1,56 @@
+language: android
+
+env:
+  global:
+    - ANDROID_API_LEVEL=28
+    - ANDROID_EMULATOR_LEVEL=24
+    - ANDROID_BUILD_TOOLS_VERSION=28.0.3
+    - ADB_INSTALL_TIMEOUT=20
+    - ANDROID_ABI=armeabi-v7a
+    - ANDROID_TAG=google_apis
+    - QEMU_AUDIO_DRV=none
+
+android:
+  components:
+    - tools
+    - platform-tools
+    - build-tools-$ANDROID_BUILD_TOOLS_VERSION
+    - android-$ANDROID_API_LEVEL
+    - android-$ANDROID_EMULATOR_LEVEL
+
+    - extra-google-m2repository
+    - extra-android-m2repository
+    - extra-android-support
+
+    - sys-img-$ANDROID_ABI-android-$ANDROID_EMULATOR_LEVEL
+
+jobs:
+  include:
+    - stage: "build"
+      script: ./gradlew clean build
+    - stage: "test"
+      name: "Unit Tests"
+      script: ./gradlew clean testDebugUnitTest --stacktrace
+    - name: "Android Tests"
+      # Emulator Management: Create, Start and Wait
+      before_script:
+        - echo no | android create avd --force -n test -t "android-"$ANDROID_EMULATOR_LEVEL --abi $ANDROID_ABI
+        - emulator -avd test -no-skin -no-window &
+        - travis_wait android-wait-for-emulator
+        - adb shell input keyevent 82 &
+      script: ./gradlew clean connectedDebugAndroidTest --stacktrace
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+    - "$HOME/.gradle/caches/"
+    - "$HOME/.gradle/wrapper/"
+    - "$HOME/.android/build-cache"
+
+licenses:
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
+    - 'android-sdk-preview-license-.+'
